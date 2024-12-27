@@ -5,13 +5,13 @@
   "main": "index.js",
   "type": "module",
   "imports": {
-    "#config/*":"./src/config/*",
-    "#controller/*":"./src/controllers/*",
-    "#model/*":"./src/models/*",
-    "#repository/*":"./src/repositorys/*",
-    "#service/*":"./src/services/*",
-    "#util/*":"./src/utils/*",
-    "#schema/*":"./src/schema/*"
+    "#config/*": "./src/config/*",
+    "#controller/*": "./src/controllers/*",
+    "#model/*": "./src/models/*",
+    "#repository/*": "./src/repositorys/*",
+    "#service/*": "./src/services/*",
+    "#util/*": "./src/utils/*",
+    "#schema/*": "./src/schema/*"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -27,6 +27,7 @@
     "express": "^4.21.2",
     "express-rate-limit": "^7.5.0",
     "helmet": "^8.0.0",
+    "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.9.2"
   }
