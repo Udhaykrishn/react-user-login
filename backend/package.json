@@ -5,7 +5,12 @@
   "main": "index.js",
   "type": "module",
   "imports": {
-
+    "#config/*":"./src/config/*",
+    "#controller/*":"./src/controllers/*",
+    "#model/*":"./src/models/*",
+    "#repository/*":"./src/repositorys/*",
+    "#service/*":"./src/services/*",
+    "#util/*":"./src/utils/*"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
