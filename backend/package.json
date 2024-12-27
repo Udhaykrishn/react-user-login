@@ -10,7 +10,8 @@
     "#model/*":"./src/models/*",
     "#repository/*":"./src/repositorys/*",
     "#service/*":"./src/services/*",
-    "#util/*":"./src/utils/*"
+    "#util/*":"./src/utils/*",
+    "#schema/*":"./src/schema/*"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
