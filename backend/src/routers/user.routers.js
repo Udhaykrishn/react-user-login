@@ -2,19 +2,23 @@ import UserController from "#controller/user.controller.js";
 import { Router } from "express"
 
 class UserRoutes {
+    #userController;
+    #router;
     constructor() {
-        this.router = Router();
-        this.initRouter();
+        this.#userController = UserController
+        this.#router = Router();
+        this.#initRouter();
     }
 
-    initRouter() {
-        this.router.post("/register", UserController.register)
-        this.router.post("/login", UserController.login)
+    #initRouter() {
+        this.#router.post("/register", this.#userController.register)
+        this.#router.post("/login", UserController.login)
+        this.#router.post("/logout",UserController.logout)
     }
 
     getRouter() {
-        return this.router;
+        return this.#router;
     }
 }
 
-export default new UserRoutes().getRouter();
+export default new UserRoutes(UserController).getRouter();
