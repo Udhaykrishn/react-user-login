@@ -2,15 +2,15 @@ import express from "express"
 import ConnectDB from "#config/db.config.js"
 import ENV from "#env/const.env.js";
 
+import UserRouter from "#router/user.routers.js"
+
 const app = express();
 
 
 app.use(express.json())
 
 
-app.get("/", (req, res) => {
-    return res.send("Hello world")
-})
+app.get("/user",UserRouter)
 
 const bootstrap = async () => {
     try {
