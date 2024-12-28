@@ -12,7 +12,7 @@
     "#service/*": "./src/services/*",
     "#util/*": "./src/utils/*",
     "#schema/*": "./src/schema/*",
-    "#router/*":"./src/routes/*"
+    "#router/*":"./src/routers/*"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
