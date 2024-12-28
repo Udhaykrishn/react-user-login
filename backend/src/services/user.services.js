@@ -2,7 +2,7 @@ import UserRepositorys from "#repository/user.repositorys.js";
 import { UserJoiSchema } from "#schema/user.schema.js";
 import PasswordHash from "#util/password.utils.js";
 import UserData from "#util/user.util.js";
-import { verifyToken } from "#util/jwt.utils.js";
+import JWT from "#util/jwt.utils.js"
 
 class UserServices {
   constructor() {
@@ -68,7 +68,7 @@ class UserServices {
 
       const tokenPayload = UserData.extractTokenPayload(user);
 
-      const token = verifyToken(tokenPayload);
+      const token = JWT.generateToken (tokenPayload);
 
       return { success: true, message: "User created successfully", token };
     } catch (error) {
