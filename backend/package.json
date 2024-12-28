@@ -11,7 +11,8 @@
     "#repository/*": "./src/repositorys/*",
     "#service/*": "./src/services/*",
     "#util/*": "./src/utils/*",
-    "#schema/*": "./src/schema/*"
+    "#schema/*": "./src/schema/*",
+    "#router/*":"./src/routes/*"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
