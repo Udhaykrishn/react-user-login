@@ -1,5 +1,6 @@
 import mongoose from "mongoose"
-
+import { config } from "dotenv";
+config();
 class ConnectDB {
     constructor() {
         this.mongodbURL = process.env.MONGODB_URL
@@ -15,6 +16,7 @@ class ConnectDB {
     async connect() {
         try {
             this.UrlNotFound();
+            console.log(this.mongodbURL)
             await mongoose.connect(this.mongodbURL)
             console.log("Database connected")
         } catch (error) {
