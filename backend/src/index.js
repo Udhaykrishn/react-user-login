@@ -23,7 +23,7 @@ const bootstrap = async () => {
 
         app.listen(PORT, () => console.log("server is started"))
     } catch (error) {
-        console.error(`Failed to start server due to database connection error: ${erro.message}`)
+        console.error(`Failed to start server due to database connection error: ${error.message}`)
     }
 }
 
