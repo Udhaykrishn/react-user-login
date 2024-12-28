@@ -12,7 +12,8 @@
     "#service/*": "./src/services/*",
     "#util/*": "./src/utils/*",
     "#schema/*": "./src/schema/*",
-    "#router/*": "./src/routers/*"
+    "#router/*": "./src/routers/*",
+    "#env/*":"./src/ENV/*"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
