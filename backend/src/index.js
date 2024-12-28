@@ -1,9 +1,6 @@
 import express from "express"
-import { config } from "dotenv"
-config();
 import ConnectDB from "#config/db.config.js"
-
-
+import ENV from "#env/const.env.js";
 
 const app = express();
 
@@ -19,9 +16,9 @@ const bootstrap = async () => {
     try {
         await ConnectDB.connect();
 
-        const PORT = process.env.PORT;
+        const PORT = ENV.PORT
 
-        app.listen(PORT, () => console.log("server is started"))
+        app.listen(PORT, () => console.log("server is started ",PORT))
     } catch (error) {
         console.error(`Failed to start server due to database connection error: ${error.message}`)
     }
