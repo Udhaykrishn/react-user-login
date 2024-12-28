@@ -6,28 +6,28 @@ class UserRepository {
     this.#user = User;
   }
 
-  async Create(payload) {
+  async create(payload) {
     return await this.#user.create(payload);
   }
 
-  async GetAllUser() {
+  async getAllUser() {
     return await this.#user.find({});
   }
 
-  async GetUserById(id) {
+  async getUserById(id) {
     return await this.#user.findById(id);
   }
 
-  async GetUserByEmail(email) {
+  async getUserByEmail(email) {
     return await this.#user.findOne({ email });
   }
 
-  async UpdateUserById(id, payload) {
+  async updateUserById(id, payload) {
     const options = { new: true, upsert: false };
     return await this.#user.findByIdAndUpdate(id, payload, options);
   }
 
-  async DeleteUserById(id) {
+  async deleteUserById(id) {
     return await this.#user.findByIdAndDelete(id);
   }
 }
