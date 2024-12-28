@@ -1,10 +1,11 @@
 import jwt from "jsonwebtoken";
+import ENV from "#env/const.env.js"
 
 class JWTService {
   #secret;
   #expire;
   constructor(secret, expire = "1h") {
-    this.#secret = secret;
+    this.#secret = secret
     this.#expire = expire;
   }
 
@@ -24,4 +25,4 @@ class JWTService {
   }
 }
 
-export default new JWTService(process.env.JWT, "1h");
+export default new JWTService(ENV.JWT_SECRET, "1h");
