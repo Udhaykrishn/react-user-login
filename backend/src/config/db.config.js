@@ -2,12 +2,14 @@ import mongoose from "mongoose"
 import ENV from "#env/const.env.js";
 
 class ConnectDB {
+    #mongodbURL;
     constructor() {
-        this.mongodbURL = ENV.MONGODB_URL
+        this.#mongodbURL = ENV.MONGODB_URL,
+        this.#UrlNotFound();
     }
 
-    UrlNotFound() {
-        if (!this.mongodbURL) {
+    #UrlNotFound() {
+        if (!this.#mongodbURL) {
             console.log("MongoDb connection string is not defined in environment variables")
             process.exit(1);
         }
@@ -15,8 +17,8 @@ class ConnectDB {
 
     async connect() {
         try {
-            this.UrlNotFound(); 
-            await mongoose.connect(this.mongodbURL)
+            this.#UrlNotFound(); 
+            await mongoose.connect(this.#mongodbURL)
             console.log("Database connected")
         } catch (error) {
             console.log("Failed to connect database")
@@ -25,4 +27,4 @@ class ConnectDB {
     }
 }
 
-export default new ConnectDB();
+export default new ConnectDB()
