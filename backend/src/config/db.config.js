@@ -1,9 +1,9 @@
 import mongoose from "mongoose"
-import { config } from "dotenv";
-config();
+import ENV from "#env/const.env.js";
+
 class ConnectDB {
     constructor() {
-        this.mongodbURL = process.env.MONGODB_URL
+        this.mongodbURL = ENV.MONGODB_URL
     }
 
     UrlNotFound() {
@@ -15,8 +15,7 @@ class ConnectDB {
 
     async connect() {
         try {
-            this.UrlNotFound();
-            console.log(this.mongodbURL)
+            this.UrlNotFound(); 
             await mongoose.connect(this.mongodbURL)
             console.log("Database connected")
         } catch (error) {
