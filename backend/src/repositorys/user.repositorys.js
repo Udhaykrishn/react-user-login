@@ -1,32 +1,35 @@
 import { User } from "#model/user.model.js";
 
 class UserRepository {
+  #user;
+  constructor(User) {
+    this.#user = User;
+  }
 
-    async CreateUser(payload) {
+  async Create(payload) {
+    return await this.#user.create(payload);
+  }
 
-        return await User.create(payload)
-    }
+  async GetAllUser() {
+    return await this.#user.find({});
+  }
 
-    async GetAllUser() {
-        return await User.find({})
-    }
+  async GetUserById(id) {
+    return await this.#user.findById(id);
+  }
 
-    async GetUserById(id) {
-        return await User.findById(id);
-    }
+  async GetUserByEmail(email) {
+    return await this.#user.findOne({ email });
+  }
 
-    async GetUserByEmail(email) {
-        return await User.findOne({ email })
-    }
+  async UpdateUserById(id, payload) {
+    const options = { new: true, upsert: false };
+    return await this.#user.findByIdAndUpdate(id, payload, options);
+  }
 
-    async UpdateUserById(id, payload) {
-        d
-        return await User.findByIdAndUpdate(id, payload, { new: true, upsert: false })
-    }
-
-    async DeleteUserById(id) {
-        return await User.findByIdAndDelete(id)
-    }
+  async DeleteUserById(id) {
+    return await this.#user.findByIdAndDelete(id);
+  }
 }
 
-export default new UserRepository()
+export default new UserRepository(User);
