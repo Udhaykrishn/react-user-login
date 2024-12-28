@@ -1,9 +1,20 @@
 import UserController from "#controller/user.controller.js";
-import {Router} from "express"
+import { Router } from "express"
 
-const router = Router();
+class UserRoutes {
+    constructor() {
+        this.router = Router();
+        this.initRouter();
+    }
 
-router.post("/register",UserController.login)
-router.post("/login",UserController.register)
+    initRouter() {
+        this.router.post("/register", UserController.register)
+        this.router.post("/login", UserController.login)
+    }
 
-export default router;
+    getRouter() {
+        return this.router;
+    }
+}
+
+export default new UserRoutes().getRouter();
