@@ -5,11 +5,12 @@ import UserData from "#util/user.util.js";
 import JWT from "#util/jwt.utils.js"
 
 class UserServices {
-  constructor() {
-    this.userRepository = UserRepositorys;
+  #userRepository;
+  constructor(UserRepositorys) {
+    this.#userRepository = UserRepositorys;
   }
 
-  FormValidate(payload) {
+  #FormValidate(payload) {
     const { error } = UserJoiSchema.validate(payload);
     if (error) {
       throw new Error(error.details[0].message);
@@ -18,8 +19,8 @@ class UserServices {
 
   async register(payload) {
     try {
-      this.FormValidate(payload);
-      const existingUser = await this.userRepository.GetUserByEmail(
+      this.#FormValidate(payload);
+      const existingUser = await this.#userRepository.getUserByEmail(
         payload.email
       );
 
@@ -29,7 +30,7 @@ class UserServices {
 
       const hashedPassword = PasswordHash.hash(payload.password);
       payload.password = hashedPassword;
-      const newUser = await this.userRepository.CreateUser(payload);
+      const newUser = await this.#userRepository.create(payload);
       return {
         success: true,
         message: "User registered successfully",
@@ -39,22 +40,22 @@ class UserServices {
       console.error(error.message);
       return {
         success: false,
-        message: `Error during registration: ${error.message}`,
+        message: `Error during registration,Please try again`,
       };
     }
   }
 
   async login(payload) {
-    this.FormValidate(payload);
+    this.#FormValidate(payload);
     try {
-      const user = await this.userRepository.GetUserByEmail(payload.email);
+      const user = await this.#userRepository.getUserByEmail(payload.email);
 
       if (!user) {
         return { success: false, message: "Email is not found" };
       }
 
       if (user.isBlocked) {
-        return { success: false, messagse: "User blocked by admin" };
+        return { success: false, message: "User blocked by admin" };
       }
 
       const hashedPassword = PasswordHash.verify(
@@ -75,9 +76,9 @@ class UserServices {
       console.error(error.message);
       console.log(error);
 
-      return { success: false, message: `Error during login ${error.message}` };
+      return { success: false, message: `Error during login,Please try again` };
     }
   }
 }
 
-export default new UserServices();
+export default new UserServices(UserRepositorys)
