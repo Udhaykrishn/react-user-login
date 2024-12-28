@@ -2,7 +2,7 @@ import UserRepositorys from "#repository/user.repositorys.js";
 import { UserJoiSchema } from "#schema/user.schema.js";
 import PasswordHash from "#util/password.utils.js";
 import UserData from "#util/user.util.js";
-import JWT from "#util/jwt.utils.js"
+import JWT from "#util/jwt.utils.js";
 
 class UserServices {
   #userRepository;
@@ -28,7 +28,7 @@ class UserServices {
         return { success: false, message: "User already exists" };
       }
 
-      const hashedPassword = PasswordHash.hash(payload.password);
+      const hashedPassword = await PasswordHash.hash(payload.password);
       payload.password = hashedPassword;
       const newUser = await this.#userRepository.create(payload);
       return {
@@ -50,8 +50,8 @@ class UserServices {
     try {
       const user = await this.#userRepository.getUserByEmail(payload.email);
 
-      if (!user) {
-        return { success: false, message: "Email is not found" };
+      if (user) {
+        return { success: false, message: "User already exists" };
       }
 
       if (user.isBlocked) {
@@ -69,7 +69,7 @@ class UserServices {
 
       const tokenPayload = UserData.extractTokenPayload(user);
 
-      const token = JWT.generateToken (tokenPayload);
+      const token = JWT.generateToken(tokenPayload);
 
       return { success: true, message: "User created successfully", token };
     } catch (error) {
@@ -77,8 +77,21 @@ class UserServices {
       console.log(error);
 
       return { success: false, message: `Error during login,Please try again` };
+    } 
+  }
+
+  async logout(res) {
+    try {
+      res.clearCookie("userToken");
+      return { success: true, message: "User logout successfully" };
+    } catch (error) {
+      console.error("Error during user logout ", error.message);
+      return {
+        success: false,
+        message: "Error during logout,Please try again",
+      };
     }
   }
 }
 
-export default new UserServices(UserRepositorys)
+export default new UserServices(UserRepositorys);
