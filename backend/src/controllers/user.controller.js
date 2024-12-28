@@ -44,5 +44,5 @@ class UserController {
     }
 
 }
-z
+
 export default new UserController();
