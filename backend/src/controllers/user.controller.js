@@ -24,7 +24,24 @@ class UserController {
     }
 
 
-    
+    async login(req, res) {
+        try {
+            const payload = req.body;
+            const user = await this.userService.login(payload)
+
+            if (user.success) {
+                return res.status(200).json(user);
+            } else {
+                return res.status(401).json(user);
+            }
+        } catch (error) {
+            console.error("Error in UserController.resiger: ", error.message);
+            return res.status(500).json({
+                success: false,
+                message: "Internal server error"
+            })
+        }
+    }
 
 }
 z
