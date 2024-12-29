@@ -13,7 +13,8 @@
     "#util/*": "./src/utils/*",
     "#schema/*": "./src/schema/*",
     "#router/*": "./src/routers/*",
-    "#env/*":"./src/ENV/*"
+    "#env/*":"./src/ENV/*",
+    "#container/*":"./src/container/*"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
