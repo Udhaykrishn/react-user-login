@@ -1,10 +1,9 @@
-import UserRepositorys from "#repository/user.repositorys.js";
 import { UserJoiSchema } from "#schema/user.schema.js";
 import PasswordHash from "#util/password.utils.js";
 import UserData from "#util/user.util.js";
 import JWT from "#util/jwt.utils.js";
 
-class UserServices {
+export class UserServices {
   #userRepository;
   constructor(UserRepositorys) {
     this.#userRepository = UserRepositorys;
@@ -93,5 +92,3 @@ class UserServices {
     }
   }
 }
-
-export default new UserServices(UserRepositorys);
