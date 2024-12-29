@@ -1,6 +1,4 @@
-import { User } from "#model/user.model.js";
-
-class UserRepository {
+export class UserRepository {
   #user;
   constructor(User) {
     this.#user = User;
@@ -32,4 +30,3 @@ class UserRepository {
   }
 }
 
-export default new UserRepository(User);
