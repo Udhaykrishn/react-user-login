@@ -1,10 +1,12 @@
-import UserServices from "#service/user.services.js";
-
-class UserController {
+export class UserController {
+  #userService;
+  constructor(UserServices) {
+    this.#userService = UserServices;
+  }
   async register(req, res) {
     try {
       const payload = req.body;
-      const user = await UserServices.register(payload)
+      const user = await this.#userService.register(payload);
 
       if (user.success) {
         return res.status(201).json(user);
@@ -23,7 +25,7 @@ class UserController {
   async login(req, res) {
     try {
       const payload = req.body;
-      const user = await UserServices.login(payload)
+      const user = await this.#userService.login(payload);
 
       if (user.success) {
         return res.status(200).json(user);
@@ -41,14 +43,18 @@ class UserController {
 
   async logout(req, res) {
     try {
-      const result = UserServices.logout(res);
+      const result = await this.#userService.logout(res);
+      console.log(result);
       if (result.success) {
-        return res.json(200).json(result);
+        return res.status(200).json(result);
       } else {
-        return res.json(400).json(result);
+        return res.status(400).json(result);
       }
-    } catch (error) {} 
+    } catch (error) {
+      console.log("Error during the logout", error.message);
+      return res
+        .status(500)
+        .json({ success: false, message: "Internal Server error" });
+    }
   }
 }
-
-export default new UserController(UserServices);
