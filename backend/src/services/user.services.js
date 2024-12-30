@@ -28,8 +28,6 @@ export class UserServices {
         return { success: false, message: "User already exists" };
       }
 
-      const hashedPassword = await PasswordHash.hash(payload.password);
-      payload.password = hashedPassword;
       const newUser = await this.#userRepository.create(payload);
       return {
         success: true,
