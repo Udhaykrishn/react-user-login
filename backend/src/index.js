@@ -3,6 +3,7 @@ import ConnectDB from "#config/db.config.js";
 import ENV from "#env/const.env.js";
 
 import UserRouter from "#router/user.routers.js";
+import AdminRouter from "#router/admin.routes.js"
 
 const app = express(); 
 
@@ -13,6 +14,7 @@ const bootstrap = async () => {
     await ConnectDB.connect();
 
     app.use("/user", UserRouter);
+    app.use("/admin",AdminRouter)
 
     const PORT = ENV.PORT;
 
