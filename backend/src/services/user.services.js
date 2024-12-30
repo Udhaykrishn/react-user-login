@@ -12,7 +12,8 @@ export class UserServices {
   #FormValidate(payload) {
     const { error } = UserJoiSchema.validate(payload);
     if (error) {
-      throw new Error(error.details[0].message);
+      console.log(error.details[0].message)
+      return {success:false,message:(error.details[0].message)};
     }
   }
 
@@ -49,7 +50,7 @@ export class UserServices {
     try {
       const user = await this.#userRepository.getUserByEmail(payload.email);
 
-      if (user) {
+      if (!user) {
         return { success: false, message: "User already exists" };
       }
 
