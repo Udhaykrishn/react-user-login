@@ -1,5 +1,5 @@
 import Admin from '#model/admin.model.js';
-import { AdminRepository } from '#repository/auth.repository.js';
+import { AdminRepository } from '#repository/admin.repository.js';
 import { AdminServices } from '#service/admin.service.js';
 import { AdminController } from '#controller/admin.controller.js';
 
