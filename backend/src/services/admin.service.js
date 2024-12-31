@@ -1,11 +1,13 @@
 import JwtService from "#util/jwt.utils.js";
 import PasswordService from "#util/password.utils.js"
-import { adminJoiSchema } from "#schema/admin.schema.js";
+import { UserJoiSchema  } from "#schema/index.js";
 
 export class AdminServices{
     #adminRepository;
-    constructor(AdminRepository){
+    #user;
+    constructor(AdminRepository,UserRepository){
         this.#adminRepository = AdminRepository
+        this.#user = UserRepository
     }
 
 
@@ -46,5 +48,23 @@ export class AdminServices{
                 message:"Internal server error"
             }
         }
+    }
+
+    async create(payload){
+      try {
+        const {error} =  UserJoiSchema.validate()
+        if(error){
+            return {success:false,message:error.details[0].message}
+        }
+        const user  = this.#user.getUserByEmail(payload.email);
+        if(user){
+            return {success:false,message:"User already Exsits"}
+        }
+         const newUser = await this.#user.create(payload)
+        return {success:true,message:"User created successfully",user:newUser}
+      } catch (error) {
+        console.log(error.message)
+        return {success:false,message:"Interval server error"}
+      } 
     }
 }
