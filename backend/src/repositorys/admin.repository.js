@@ -1,4 +1,4 @@
-export class AdminRepository {
+ class AdminRepository {
   #admin
   constructor(Admin) {
     this.#admin = Admin;
@@ -8,3 +8,4 @@ export class AdminRepository {
   }
 }
 
+export {AdminRepository}

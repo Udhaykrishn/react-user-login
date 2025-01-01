@@ -1,4 +1,4 @@
-export class AdminController{
+ class AdminController{
     #adminService;
     constructor(AdminServices){
         this.#adminService =  AdminServices;
@@ -64,3 +64,4 @@ export class AdminController{
     }
 }
 
+export {AdminController}

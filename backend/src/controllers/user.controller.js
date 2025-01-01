@@ -1,4 +1,4 @@
-export class UserController {
+ class UserController {
   #userService;
   constructor(UserServices) {
     this.#userService = UserServices;
@@ -58,3 +58,5 @@ export class UserController {
     }
   }
 }
+
+export {UserController}
