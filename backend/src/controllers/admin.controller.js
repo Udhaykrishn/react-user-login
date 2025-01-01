@@ -4,6 +4,20 @@
         this.#adminService =  AdminServices;
     }
 
+    async users(req,res){
+            try {
+                const users = await this.#adminService.users();
+                if(users.success){
+                    return res.status(200).json(users)
+                }else{
+                    return res.status(400).json(users)
+                }
+            } catch (error) {
+                console.log(error.message)
+                return {success:false,message:"Internal server error"}
+            }
+    }
+
     async login(req,res){
         try {
             const user = await this.#adminService.login(req.body)
