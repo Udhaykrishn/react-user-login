@@ -5,7 +5,7 @@ import { AdminServices } from '#service/index.js';
 import { AdminController } from '#controller/index.js';
 import { createContainer, asClass, asValue } from 'awilix';
 
-const container = createContainer();
+const container = createContainer({strict:true,injectionMode:"PROXY"});
 
 container.register({
 	//Models
