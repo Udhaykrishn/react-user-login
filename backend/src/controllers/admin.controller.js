@@ -34,5 +34,19 @@ export class AdminController{
             return res.status(500).json({message:"Interval server error"})
         }
     }
+    async update(req,res){
+       try {
+        const {id} = req.params;
+        const updateUser  = await this.#adminService.update(id,req.body)
+        if(updateUser.success){
+            return res.status(201).json(updateUser)
+        }else{
+            return res.status(400).json(updateUser)
+        }
+       } catch (error) {
+        console.log(error.message)
+        return res.status(500).json({message:"Interval server error"})
+       }
+    }
 }
 
