@@ -15,9 +15,10 @@ class AdminRouter{
 
         // crud routes
         // this.#router.get("/dashboard",this.#adminController)
-        // this.#router.post("/dashbaord/create")
-        // this.#router.patch("/dashbaord/edit/:id")
-        // this.#router.delete("/dashbaord/delete/:id")
+        this.#router.get("/dashboard/users",adminControllers.users)
+        this.#router.post("/dashboard/create",adminControllers.create)
+        this.#router.patch("/dashboard/update/:id",adminControllers.update)
+        this.#router.delete("/dashboard/delete/:id",adminControllers.delete)
     }
 
     getRoutes(){
