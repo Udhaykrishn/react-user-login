@@ -4,6 +4,7 @@ import ENV from "#env/const.env.js";
 import { limiter } from "#config/ratelimit.config.js";
 import helmet from "helmet"
 import cors from "cors"
+import cookie from "cookie-parser"
 
 import UserRouter from "#router/user.routers.js";
 import AdminRouter from "#router/admin.routes.js"
@@ -14,6 +15,8 @@ app.use(express.json());
 app.use(helmet())
 app.use(limiter)
 app.use(cors())
+app.use(cookie())
+
 
 const bootstrap = async () => {
   try {
