@@ -31,7 +31,7 @@ export class AdminController{
             }
         } catch (error) {
             console.log(error.message)
-            return res.status(500).json({message:"Interval server error"})
+            return res.status(500).json({message:"Internal server error"})
         }
     }
     async update(req,res){
@@ -45,8 +45,22 @@ export class AdminController{
         }
        } catch (error) {
         console.log(error.message)
-        return res.status(500).json({message:"Interval server error"})
+        return res.status(500).json({message:"Internal server error"})
        }
+    }
+    async delete(req,res){
+        try {
+            const {id} = req.params;
+            const deleteUser = await this.#adminService.delete(id)
+            if(deleteUser){
+                return res.status(200).json(deleteUser)
+            }else{
+                return res.status(400).json(deleteUser)
+            }
+        } catch (error) {
+            console.log(error.message)
+            return res.status(500).json({message:"Internal server error"})
+        }
     }
 }
 
