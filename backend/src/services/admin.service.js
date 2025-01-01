@@ -89,4 +89,17 @@ export class AdminServices{
         return {success:false,message:"Interval server error"}   
        }
     }
+    async delete(id){
+        try {
+            const existsUser  = await this.#user.getUserById(id)
+            if(!existsUser){
+                return {success:false,message:"User not found"}
+            }
+            const deleteUser = await this.#user.deleteUserById(id)
+            return {success:true,message:"User deleted successfully",user:deleteUser}
+        } catch (error) {
+            console.log(error.message)
+            return {success:false,message:"Intervala server error"}
+        }
+    }
 }
