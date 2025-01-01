@@ -10,3 +10,12 @@ export const UserJoiSchema = Joi.object({
     isBlocked: Joi.boolean().optional(),
     photo: Joi.string().uri().optional(),
 }) 
+
+export const userUpdateJoiSchema = Joi.object({
+	username:Joi.string().optional().min(4),
+	email: Joi.string().email().optional(),
+	password: Joi.string().min(8).optional(),
+    role: Joi.string().valid("user", "admin").optional(),
+    isBlocked: Joi.boolean().optional(),
+    photo: Joi.string().uri().optional(),
+});
