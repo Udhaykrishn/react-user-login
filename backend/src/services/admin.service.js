@@ -1,6 +1,6 @@
 import JwtService from "#util/jwt.utils.js";
 import PasswordService from "#util/password.utils.js"
-import { UserJoiSchema,adminJoiSchema  } from "#schema/index.js";
+import { UserJoiSchema,adminJoiSchema,userUpdateJoiSchema  } from "#schema/index.js";
 
 export class AdminServices{
     #adminRepository;
@@ -56,7 +56,7 @@ export class AdminServices{
         if(error){
             return {success:false,message:error.details[0].message}
         }
-        const user  = this.#user.getUserByEmail(payload.email);
+        const user  = await this.#user.getUserByEmail(payload.email);
         if(user){
             return {success:false,message:"User already Exsits"}
         }
@@ -70,7 +70,7 @@ export class AdminServices{
 
     async update(id,payload){
        try {
-        const {error} = UserJoiSchema.validate()
+        const {error} = userUpdateJoiSchema.validate()
         if(error){
             console.log(error.details[0].message)
             return {success:false,message:error.details[0].message}
