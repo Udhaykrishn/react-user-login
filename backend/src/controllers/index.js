@@ -1,2 +1,2 @@
-export * from "./user.controller"
-export * from "./admin.controller"
+export  * from "./admin.controller.js"
+export  * from "./user.controller.js"

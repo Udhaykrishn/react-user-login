@@ -1,2 +1,2 @@
-export * from "./user.services"
-export * from "./admin.service"
+export * from "./user.services.js"
+export * from "./admin.service.js"
