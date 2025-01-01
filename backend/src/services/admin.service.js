@@ -12,7 +12,7 @@ export class AdminServices{
 
     async users(){
         try {
-            const users = await this.#user.getAllUsers();
+            const users = await this.#user.getAllUser();
             return {
                 success:true,message:"All users",users
             }
