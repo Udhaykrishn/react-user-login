@@ -10,6 +10,19 @@ export class AdminServices{
         this.#user = UserRepository
     }
 
+    async users(){
+        try {
+            const users = await this.#user.getAllUsers();
+            return {
+                success:true,message:"All users",users
+            }
+        } catch (error) {
+            console.log(error)
+            return {
+                success:false,message:"Failed to fetch user information"
+            }
+        }
+    }
 
     async login(payload){
         try {
