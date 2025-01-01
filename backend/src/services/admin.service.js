@@ -67,4 +67,26 @@ export class AdminServices{
         return {success:false,message:"Interval server error"}
       } 
     }
+
+    async update(id,payload){
+       try {
+        const {error} = UserJoiSchema.validate()
+        if(error){
+            console.log(error.details[0].message)
+            return {success:false,message:error.details[0].message}
+        }
+
+        const existsUser = await this.#user.getUserByEmail(payload.email)
+        if(existsUser){
+            return {success:false,message:"User already exists"}
+        }
+
+        const updateUser = await this.#user.updateUserById(id,payload)
+        console.log(updateUser)
+        return {success:true,message:"User updated successfully",user:updateUser}
+       } catch (error) {
+        console.log(error.message)
+        return {success:false,message:"Interval server error"}   
+       }
+    }
 }
