@@ -5,8 +5,8 @@ import JWT from "#util/jwt.utils.js";
 
 export class UserServices {
   #userRepository;
-  constructor(UserRepositorys) {
-    this.#userRepository = UserRepositorys;
+constructor({userRepository}) {
+    this.#userRepository = userRepository;
   }
 
   #FormValidate(payload) {

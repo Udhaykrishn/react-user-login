@@ -1,7 +1,7 @@
  class UserController {
   #userService;
-  constructor(UserServices) {
-    this.#userService = UserServices;
+  constructor({userService}) {
+    this.#userService = userService;
   }
   async register(req, res) {
     try {
