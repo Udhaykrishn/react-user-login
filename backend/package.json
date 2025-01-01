@@ -13,8 +13,8 @@
     "#util/*": "./src/utils/*",
     "#schema/*": "./src/schema/*",
     "#router/*": "./src/routers/*",
-    "#env/*":"./src/ENV/*",
-    "#container/*":"./src/container/*"
+    "#env/*": "./src/ENV/*",
+    "#container/*": "./src/container/*"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -25,6 +25,7 @@
   "license": "ISC",
   "dependencies": {
     "argon2": "^0.41.1",
+    "awilix": "^12.0.4",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
