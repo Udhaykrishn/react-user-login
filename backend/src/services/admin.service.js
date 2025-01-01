@@ -5,9 +5,9 @@ import { UserJoiSchema,adminJoiSchema,userUpdateJoiSchema  } from "#schema/index
 export class AdminServices{
     #adminRepository;
     #user;
-    constructor(AdminRepository,UserRepository){
-        this.#adminRepository = AdminRepository
-        this.#user = UserRepository
+    constructor({adminRepository,userRepository}){
+        this.#adminRepository = adminRepository
+        this.#user = userRepository
     }
 
     async users(){

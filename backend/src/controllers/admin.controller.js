@@ -1,12 +1,12 @@
  class AdminController{
-    #adminService;
-    constructor(AdminServices){
-        this.#adminService =  AdminServices;
+    #adminServices;
+    constructor({adminServices}){
+        this.#adminServices =  adminServices;
     }
 
     async users(req,res){
             try {
-                const users = await this.#adminService.users();
+                const users = await this.#adminServices.users();
                 if(users.success){
                     return res.status(200).json(users)
                 }else{
@@ -20,7 +20,7 @@
 
     async login(req,res){
         try {
-            const user = await this.#adminService.login(req.body)
+            const user = await this.#adminServices.login(req.body)
 
             if(user.sccess){
                 return res.status(200).json(user)
@@ -36,7 +36,7 @@
     }
     async create(req,res){
         try {
-            const user = await this.#adminService.create(req.body)
+            const user = await this.#adminServices.create(req.body)
 
             if(user.success){
                 return res.status(201).json(user)
@@ -51,7 +51,7 @@
     async update(req,res){
        try {
         const {id} = req.params;
-        const updateUser  = await this.#adminService.update(id,req.body)
+        const updateUser  = await this.#adminServices.update(id,req.body)
         if(updateUser.success){
             return res.status(201).json(updateUser)
         }else{
@@ -65,7 +65,7 @@
     async delete(req,res){
         try {
             const {id} = req.params;
-            const deleteUser = await this.#adminService.delete(id)
+            const deleteUser = await this.#adminServices.delete(id)
             if(deleteUser){
                 return res.status(200).json(deleteUser)
             }else{

@@ -1,7 +1,7 @@
  class AdminRepository {
   #admin
-  constructor(Admin) {
-    this.#admin = Admin;
+  constructor({adminModel}) {
+    this.#admin = adminModel;
   }
   findByEmail(email) {
     return this.#admin.findOne({ email });

@@ -1,7 +1,7 @@
  class UserRepository {
   #user;
-  constructor(User) {
-    this.#user = User;
+  constructor({userModel}) {
+    this.#user = userModel;
   }
 
   async create(payload) {
