@@ -1,6 +1,6 @@
 import JwtService from "#util/jwt.utils.js";
 import PasswordService from "#util/password.utils.js"
-import { UserJoiSchema  } from "#schema/index.js";
+import { UserJoiSchema,adminJoiSchema  } from "#schema/index.js";
 
 export class AdminServices{
     #adminRepository;
