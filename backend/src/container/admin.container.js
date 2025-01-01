@@ -8,5 +8,8 @@ const adminService = new AdminServices(adminRepo)
 const adminController = new AdminController(adminService)
 
 export const adminControllers = {
-    login:adminController.login.bind(adminController)
+    login:adminController.login.bind(adminController),
+    create:adminController.create.bind(adminController),
+    update:adminController.update.bind(adminController),
+    delete:adminController.delete.bind(adminController),
 }
