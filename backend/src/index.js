@@ -1,6 +1,9 @@
 import express from "express";
 import ConnectDB from "#config/db.config.js";
 import ENV from "#env/const.env.js";
+import { limiter } from "#config/ratelimit.config.js";
+import helmet from "helmet"
+import cors from "cors"
 
 import UserRouter from "#router/user.routers.js";
 import AdminRouter from "#router/admin.routes.js"
@@ -8,6 +11,9 @@ import AdminRouter from "#router/admin.routes.js"
 const app = express(); 
 
 app.use(express.json());
+app.use(helmet())
+app.use(limiter)
+app.use(cors())
 
 const bootstrap = async () => {
   try {
