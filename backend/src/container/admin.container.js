@@ -30,5 +30,6 @@ export const adminControllers = {
 	create: adminController.create.bind(adminController),
 	update: adminController.update.bind(adminController),
 	delete: adminController.delete.bind(adminController),
-	users: adminController.users.bind(adminController)
+	users: adminController.users.bind(adminController),
+	logout:adminController.logout.bind(adminController)
 };
