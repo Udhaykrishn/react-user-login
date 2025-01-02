@@ -28,6 +28,7 @@
       const user = await this.#userService.login(payload);
 
       if (user.success) {
+        res.cookie("userToken",user.token)
         return res.status(200).json(user);
       } else {
         return res.status(401).json(user);
