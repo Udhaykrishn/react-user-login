@@ -22,7 +22,9 @@
         try {
             const user = await this.#adminServices.login(req.body)
 
-            if(user.sccess){
+            if(user.success){
+                console.log(user.token)
+                res.cookie("adminToken",user?.token)
                 return res.status(200).json(user)
             }else{
                 return res.status(400).json(user)
@@ -34,6 +36,21 @@
             return res.status(500).json({message:"Interval server error"})
         }
     }
+
+    async logout(req,res){
+        try {
+            const result = await this.#adminServices.logout(res);
+            if(result.success){
+                return res.status(200).json(result)
+            }else{
+                return res.status(500).json(result)
+            }
+        } catch (error) {
+            console.log(error.message)
+            return res.status(500).json(result)
+        }
+    }
+
     async create(req,res){
         try {
             const user = await this.#adminServices.create(req.body)
