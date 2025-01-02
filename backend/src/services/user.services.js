@@ -12,14 +12,19 @@ constructor({userRepository}) {
   #FormValidate(payload) {
     const { error } = UserJoiSchema.validate(payload);
     if (error) {
-      console.log(error.details[0].message)
+      let err = error.details[0].message
+      console.log(err)
       return {success:false,message:(error.details[0].message)};
     }
+    return null;
   }
 
   async register(payload) {
     try {
-      this.#FormValidate(payload);
+      const validationError = this.#FormValidate(payload)
+      if(validationError){
+        return validationError
+      }
       const existingUser = await this.#userRepository.getUserByEmail(
         payload.email
       );
@@ -44,12 +49,15 @@ constructor({userRepository}) {
   }
 
   async login(payload) {
-    this.#FormValidate(payload);
+    const validationError = this.#FormValidate(payload)
+      if(validationError){
+        return validationError
+      }
     try {
       const user = await this.#userRepository.getUserByEmail(payload.email);
 
       if (!user) {
-        return { success: false, message: "User already exists" };
+        return { success: false, message: "User not found" };
       }
 
       if (user.isBlocked) {
@@ -69,7 +77,7 @@ constructor({userRepository}) {
 
       const token = JWT.generateToken(tokenPayload);
 
-      return { success: true, message: "User created successfully", token };
+      return { success: true, message: "User logged successfully", token };
     } catch (error) {
       console.error(error.message);
       console.log(error);
@@ -80,7 +88,10 @@ constructor({userRepository}) {
 
   async logout(res) {
     try {
-      res.clearCookie("userToken");
+      res.clearCookie("userToken",{
+        httpOnly:true,
+        sameSite:"strict"
+      });
       return { success: true, message: "User logout successfully" };
     } catch (error) {
       console.error("Error during user logout ", error.message);
