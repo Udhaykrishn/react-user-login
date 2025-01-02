@@ -50,7 +50,6 @@ export class AdminServices {
             }
 
             const adminPayload = TokenPaylod.extractTokenPayload(admin)
-            console.log(adminPayload)
             const token = JwtService.generateToken(adminPayload)
 
             return { success: true, message: "Admin login successfully", token }
@@ -66,7 +65,7 @@ export class AdminServices {
     }
 
     async logout(res) {
-        res.clearCookie("adminToken", { httpOnly: true, sameSite: "strict" })
+        res.clearCookie("adminToken")
 
         return { success: true, messssage: "Admin logout successfully" }
     }
