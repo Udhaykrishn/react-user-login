@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
+import PasswordService from "#util/password.utils.js"
 
-const adminSChema = new mongoose.Schema(
+const adminSchema = new mongoose.Schema(
     {
         email: {
             type: String,
@@ -23,5 +24,13 @@ const adminSChema = new mongoose.Schema(
     }
 );
 
-const Admin = mongoose.model("Admin", adminSChema);
+adminSchema.pre("save",async function(next){
+    if(!this.isModified()){
+        return next();
+    }
+    this.password = await PasswordService.hash(this.password)
+    next();
+})
+
+const Admin = mongoose.model("Admin", adminSchema);
 export default Admin 
