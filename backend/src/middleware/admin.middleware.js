@@ -10,13 +10,14 @@ class AdminVerifyService{
 
         try {
             const payload = JwtService.verifyToken(token)
-            console.log(payload)
             
             if(payload.role !== "admin"){
                 return res.status(403).json({
                     success:false,message:"Access denied, User does not have admin access"
                 })
             }
+
+            req.user = payload
 
             return next()
 
