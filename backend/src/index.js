@@ -9,12 +9,12 @@ import cookie from "cookie-parser"
 import UserRouter from "#router/user.routers.js";
 import AdminRouter from "#router/admin.routes.js"
 
-const app = express(); 
+const app = express();
 
 app.use(express.json());
 app.use(helmet())
 app.use(limiter)
-app.use(cors({credentials:true}))
+app.use(cors({ origin:"http://localhost:5173", credentials: true }))
 app.use(cookie())
 
 
@@ -23,7 +23,7 @@ const bootstrap = async () => {
     await ConnectDB.connect();
 
     app.use("/user", UserRouter);
-    app.use("/admin",AdminRouter)
+    app.use("/admin", AdminRouter)
 
     const PORT = ENV.PORT;
 
