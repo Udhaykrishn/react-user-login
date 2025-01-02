@@ -14,7 +14,8 @@
     "#schema/*": "./src/schema/*",
     "#router/*": "./src/routers/*",
     "#env/*": "./src/ENV/*",
-    "#container/*": "./src/container/*"
+    "#container/*": "./src/container/*",
+    "#middleware/*":"./src/middleware/*"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
