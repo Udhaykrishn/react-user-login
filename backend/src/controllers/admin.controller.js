@@ -23,7 +23,6 @@
             const user = await this.#adminServices.login(req.body)
 
             if(user.success){
-                console.log(user.token)
                 res.cookie("adminToken",user?.token)
                 return res.status(200).json(user)
             }else{
