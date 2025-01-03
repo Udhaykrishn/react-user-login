@@ -17,6 +17,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+*::selection{
+  user-select: none;
+}
+
 
 
 @layer base {
