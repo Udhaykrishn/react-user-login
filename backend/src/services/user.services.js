@@ -1,8 +1,9 @@
-import { UserJoiSchema } from "#schema/user.schema.js";
+import { UserJoiSchema, userUpdateJoiSchema } from "#schema/user.schema.js";
 import PasswordHash from "#util/password.utils.js";
 import UserData from "#util/user.util.js";
 import JWT from "#util/jwt.utils.js";
-
+import path from "node:path"
+import { supabase } from "#config/supabase.config.js";
 export class UserServices {
   #userRepository;
 constructor({userRepository}) {
@@ -85,6 +86,43 @@ constructor({userRepository}) {
       return { success: false, message: `Error during login,Please try again` };
     } 
   }
+
+  async update(id, payload) {
+    try {
+      const { error } = userUpdateJoiSchema.validate(payload);
+      if (error) {
+        console.log(error.details[0].message);
+        return { success: false, message: error.details[0].message };
+      }
+  
+      const updateUser = await this.#userRepository.updateUserById(id, payload);
+      if (!updateUser) {
+        return { success: false, message: "User not found" };
+      }
+  
+      return { success: true, message: "User updated successfully", user: updateUser };
+    } catch (error) {
+      console.error(error.message);
+      return { success: false, message: "Internal server error" };
+    }
+  }
+
+  async profile(req){
+    try {
+      const user = await this.#userRepository.getUserById(req.user.id)
+
+      if(!user){
+        return {success:false,message:"User not found"}
+      }
+
+      return {success:true,message:"User logged is ",user}
+
+    } catch (error) {
+      console.log(error)
+      return {success:false,message:"Internal server error"}
+    }
+  }
+  
 
   async logout(res) {
     try {
