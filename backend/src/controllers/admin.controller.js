@@ -80,7 +80,6 @@
     }
     async delete(req,res){
         try {
-            const {id} = req.params;
             const deleteUser = await this.#adminServices.delete(id)
             if(deleteUser){
                 return res.status(200).json(deleteUser)
