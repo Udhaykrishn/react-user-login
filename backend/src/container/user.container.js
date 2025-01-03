@@ -26,4 +26,6 @@ export const UserControllers = {
   register: userController.register.bind(userController),
   login: userController.login.bind(userController),
   logout: userController.logout.bind(userController),
+  update:userController.update.bind(userController),
+  profile:userController.profile.bind(userController)
 };
