@@ -5,7 +5,7 @@ class AdminVerifyService{
         const token = req.cookies?.adminToken
         
         if(!token){
-            return res.status(401).json({message:"TokenExpire",})
+            return res.status(401).json({message:"Token missing",})
         }
 
         try {
@@ -17,12 +17,18 @@ class AdminVerifyService{
                 })
             }
 
-            req.user = payload
+            req.admin = payload
 
             return next()
 
         } catch (error) {
-            console.log(error.message)
+            console.log(error.name)
+            if (error.name === "TokenExpiredError") {
+                return res.status(401).json({
+                    success: false,
+                    message: "TokenExpire",
+                });
+            }
             return res.status(500).json({success:false,message:"Internal server error"})
         }
     }
