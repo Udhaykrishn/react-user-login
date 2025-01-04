@@ -52,11 +52,13 @@ const UserList = ({ data = [], setUserList }) => {
         isBlocked: !selectedUser.isBlocked
       });
 
+
+
       if (response.data.success) {
         setUserList(prevUsers =>
           prevUsers.map(user =>
             user._id === response.data.user._id
-              ? { ...user, isBlocked: user.isBlocked }
+              ? { ...user, isBlocked: !user.isBlocked }
               : user
           )
         );
