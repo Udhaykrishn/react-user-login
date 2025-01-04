@@ -68,6 +68,7 @@
        try {
         const {id} = req.params;
         const updateUser  = await this.#adminServices.update(id,req.body)
+        console.log(updateUser,"=== updated user")
         if(updateUser.success){
             return res.status(201).json(updateUser)
         }else{
