@@ -1,40 +1,41 @@
-import { useState, useMemo } from 'react';
-import axios from 'axios';
-import { Search, CheckCircle2, XCircle } from 'lucide-react';
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { DeleteDialog, EditDialog, BlockDialog, DropdownMenuList, PaginationList } from '@/components/admins/components';
+import { useEffect, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
-const ITEMS_PER_PAGE = 5;
+import { useDispatch, useSelector } from 'react-redux';
+import {  fetchUsers,
+  updateUserBlockStatus,
+  deleteUser,
+  editUser,
+  setSearchQuery,
+  setCurrentPage,
+  selectPaginatedUsers,
+  selectTotalPages} from '@/slice/user/userSlice';
+import {  CheckCircle2, Search, XCircle } from 'lucide-react';
+import { Badge } from '../ui/badge';
+import { Input } from '@/components/ui/input';
+import { BlockDialog, DeleteDialog, DropdownMenuList, EditDialog, PaginationList } from './components';
 
-const UserList = ({ data = [], setUserList }) => {
-  const {toast} = useToast()
-  const [editUser, setEditUser] = useState(null);
+const UserList = () => {
+  const { toast } = useToast()
+  const dispatch = useDispatch();
+
+  const [editUserData, setEditUserData] = useState(null);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showBlockDialog, setShowBlockDialog] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
 
-  const filteredUsers = useMemo(() => {
-    return data.filter(user =>
-      user?.email?.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  }, [data, searchQuery]);
+  const paginatedUsers = useSelector(selectPaginatedUsers)
+  const totalPages = useSelector(selectTotalPages)
+  const currentPage = useSelector(state => state.users.currentPage)
+  const searchQuery = useSelector(state => state.users.searchQuery)
+  const loading = useSelector(state => state.users.loading)
+  const error = useSelector(state => state.users.error)
 
-  const totalPages = Math.max(1, Math.ceil(filteredUsers.length / ITEMS_PER_PAGE));
-
-  // Ensure currentPage stays within valid range
-  const validCurrentPage = Math.min(Math.max(1, currentPage), totalPages);
-  if (currentPage !== validCurrentPage) {
-    setCurrentPage(validCurrentPage);
-  }
-
-  const startIndex = (validCurrentPage - 1) * ITEMS_PER_PAGE;
-  const paginatedUsers = filteredUsers.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  useEffect(() => {
+    dispatch(fetchUsers())
+  }, [dispatch])
 
   const handleEdit = (user) => {
-    setEditUser(user);
+    setEditUserData(user);
   };
 
   const handleDelete = (user) => {
@@ -49,166 +50,177 @@ const UserList = ({ data = [], setUserList }) => {
 
   const handleBlockConfirm = async () => {
     try {
-      const response = await axios.patch(`admin/dashboard/update/${selectedUser._id}`, {
-        isBlocked: !selectedUser.isBlocked
-      });
+      await dispatch(updateUserBlockStatus({
+        userId: selectedUser._id,
+        isBlocked: selectedUser.isBlocked
+      })).unwrap();
 
-
-
-      if (response.data.success) {
-        setUserList(prevUsers =>
-          prevUsers.map(user =>
-            user._id === response.data.user._id
-              ? { ...user, isBlocked: !user.isBlocked }
-              : user
-          )
-        );
-
-      }
-    } catch (error) {
-      console.error('Error blocking/unblocking user:', error);
-    }
-    setShowBlockDialog(false);
-    setSelectedUser(null);
-  };
-
-  const handleEditSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.patch(`/admin/dashboard/update/${editUser._id}`, {
-        email: editUser.email
-      });
-
-      if (response.data.success) {
-        setUserList(prevUsers =>
-          prevUsers.map(user =>
-            user._id === editUser._id
-              ? { ...user, email: editUser.email }
-              : user
-          )
-        );
-      }
       toast({
         title: "Success",
-        description: "User edit success",
+        description: `User ${selectedUser.isBlocked ? 'unblocked' : 'blocked'} successfully`,
         variant: "success",
       });
     } catch (error) {
       toast({
         title: "Error",
-        description: error?.response?.data?.message || "Failed to edit user",
+        description: error || "Failed to update user status",
         variant: "destructive",
       });
     }
-    setEditUser(null);
-  };
-
-  const handleDeleteConfirm = async () => {
-    try {
-      const response = await axios.delete(`/admin/dashboard/delete/${selectedUser._id}`);
-
-      if (response.data.success) {
-        setUserList((prevList) => prevList.filter(user => user._id !== selectedUser._id));
-      } else {
-        alert("error", response.data.message);
-      }
-    } catch (error) {
-      console.error('Error deleting user:', error);
-    }
-    setShowDeleteDialog(false);
+    setShowBlockDialog(false);
     setSelectedUser(null);
-  };
-
-  const handlePageChange = (page) => {
-    if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page);
-    }
-  };
-
-  const shouldShowPagination = filteredUsers.length > ITEMS_PER_PAGE;
-
-  const getStatusIcon = (isBlocked) => {
-    return isBlocked ?
-      <XCircle className="h-4 w-4 text-red-500" /> :
-      <CheckCircle2 className="h-4 w-4 text-green-500" />;
-  };
-
-  if (!Array.isArray(data)) {
-    return (
-      <div className="w-full p-4 text-center text-gray-500">
-        No user data available
-      </div>
-    );
+  
   }
 
-  return (
-    <div className="w-full p-4 space-y-4">
-      <div className="relative">
-        <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-500" />
-        <Input
-          placeholder="Search users..."
-          value={searchQuery}
-          onChange={(e) => {
-            setSearchQuery(e.target.value);
-            setCurrentPage(1);
-          }}
-          className="pl-8"
-        />
-      </div>
 
-      {filteredUsers.length === 0 ? (
-        <div className="text-center text-gray-500">
-          No users found
-        </div>
-      ) : (
-        <>
-          <div className="rounded-md border">
-            <table className="w-full">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="p-4 text-left">Email</th>
-                  <th className="p-4 text-left">Status</th>
-                  <th className="p-4 text-left">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {paginatedUsers.map((user, index) => (
-                  <tr key={index} className="border-t">
-                    <td className="p-4">{user?.email}</td>
-                    <td className="p-4">
-                      <div className="flex items-center gap-2">
-                        {getStatusIcon(user?.isBlocked)}
-                        <Badge variant={user?.isBlocked ? "destructive" : "success"}>
-                          {user?.isBlocked ? "Blocked" : "Active"}
-                        </Badge>
-                      </div>
-                    </td>
-                    <td className="p-4">
-                      <DropdownMenuList handleBlockAction={handleBlockAction} handleDelete={handleDelete} handleEdit={handleEdit} user={user} />
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+const handleEditSubmit = async (e) => {
+  e.preventDefault();
+  try {
+ await dispatch(editUser({
+  userId:editUserData._id,
+  email:editUserData.email
+ })).unwrap()
+ 
+    toast({
+      title: "Success",
+      description: "User edit success",
+      variant: "success",
+    });
+  } catch (error) {
+    toast({
+      title: "Error",
+      description: error?.response?.data?.message || "Failed to edit user",
+      variant: "destructive",
+    });
+  }
+  setEditUserData(null);
+};
 
-          {shouldShowPagination && (
-            <PaginationList currentPage={currentPage} handlePageChange={handlePageChange} totalPages={totalPages} />
-          )}
-        </>
-      )}
+const handleDeleteConfirm = async () => {
+  try {
+   await dispatch(deleteUser(selectedUser._id)).unwrap()
+   toast({
+    title: "Success",
+    description: "User deleted successfully",
+    variant: "success",
+  });
+  } catch (error) {
+    toast({
+      title: "Error",
+      description: error || "Failed to delete user",
+      variant: "destructive",
+    });
+  }
+  setShowDeleteDialog(false);
+  setSelectedUser(null);
+};
 
-      {/* Edit User Dialog */}
-      <EditDialog editUser={editUser} handleEditSubmit={handleEditSubmit} setEditUser={setEditUser} />
+const handlePageChange = (page) => {
+  dispatch(setCurrentPage(page))
+};
+;
 
-      {/* Delete Confirmation Dialog */}
+const getStatusIcon = (isBlocked) => {
+  return isBlocked ?
+    <XCircle className="h-4 w-4 text-red-500" /> :
+    <CheckCircle2 className="h-4 w-4 text-green-500" />;
+};
+if (loading) {
+  return <div className="w-full p-4 text-center">Loading...</div>;
+}
 
-      <DeleteDialog handleDeleteConfirm={handleDeleteConfirm} setShowDeleteDialog={setShowDeleteDialog} showDeleteDialog={showDeleteDialog} />
+if (error) {
+  return <div className="w-full p-4 text-center text-red-500">{error}</div>;
+}
 
-      {/* Block/Unblock Confirmation Dialog */}
-      <BlockDialog handleBlockConfirm={handleBlockConfirm} selectedUser={selectedUser} setShowBlockDialog={setShowBlockDialog} showBlockDialog={showBlockDialog} />
+// if (!Array.isArray(data)) {
+//   return (
+//     <div className="w-full p-4 text-center text-gray-500">
+//       No user data available
+//     </div>
+//   );
+// }
+
+return (
+  <div className="w-full p-4 space-y-4">
+    <div className="relative">
+      <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-500" />
+      <Input
+        placeholder="Search users..."
+        value={searchQuery}
+       onChange={(e)=> dispatch(setSearchQuery(e.target.value))}
+        className="pl-8"
+      />
     </div>
-  );
+
+    {paginatedUsers.length === 0 ? (
+      <div className="text-center text-gray-500">
+        No users found
+      </div>
+    ) : (
+      <>
+        <div className="rounded-md border">
+          <table className="w-full">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="p-4 text-left">Email</th>
+                <th className="p-4 text-left">Status</th>
+                <th className="p-4 text-left">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {paginatedUsers.map((user, index) => (
+                <tr key={index} className="border-t">
+                  <td className="p-4">{user?.email}</td>
+                  <td className="p-4">
+                    <div className="flex items-center gap-2">
+                      {getStatusIcon(user?.isBlocked)}
+                      <Badge className={user?.isBlocked ? "bg-red-500 " : "bg-green-400"}>
+                        {user?.isBlocked ? "Blocked" : "Active"}
+                      </Badge>
+                    </div>
+                  </td>
+                  <td className="p-4">
+                    <DropdownMenuList handleBlockAction={handleBlockAction} handleDelete={handleDelete} handleEdit={handleEdit} user={user} />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        
+        <PaginationList
+            currentPage={currentPage}
+            handlePageChange={handlePageChange}
+            totalPages={totalPages}
+          />
+      </>
+    )}
+
+    {/* Edit User Dialog */}
+    <EditDialog
+        editUser={editUserData}
+        handleEditSubmit={handleEditSubmit}
+        setEditUser={setEditUserData}
+      />
+
+    {/* Delete Confirmation Dialog */}
+
+    <DeleteDialog
+        handleDeleteConfirm={handleDeleteConfirm}
+        setShowDeleteDialog={setShowDeleteDialog}
+        showDeleteDialog={showDeleteDialog}
+      />
+    {/* Block/Unblock Confirmation Dialog */}
+    <BlockDialog
+        handleBlockConfirm={handleBlockConfirm}
+        selectedUser={selectedUser}
+        setShowBlockDialog={setShowBlockDialog}
+        showBlockDialog={showBlockDialog}
+      />
+  </div>
+);
 };
 
 export default UserList;
