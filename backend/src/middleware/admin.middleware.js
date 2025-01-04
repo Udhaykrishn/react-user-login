@@ -5,7 +5,7 @@ class AdminVerifyService{
         const token = req.cookies?.adminToken
         
         if(!token){
-            return res.status(401).json({message:"Token missing,Please login later"})
+            return res.status(401).json({message:"TokenExpire",})
         }
 
         try {
