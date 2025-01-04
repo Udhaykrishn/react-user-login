@@ -24,7 +24,7 @@ const Dashboard = () => {
   return (
     <div className="h-screen">
       <h1 className="text-center text-xl font-semibold mb-4">User Table</h1>
-      <UserList data={data} setUserList={null} />
+      <UserList data={data} setUserList={setData} />
     </div>
   );
 }
