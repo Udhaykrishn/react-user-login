@@ -4,10 +4,11 @@ import { Search, CheckCircle2, XCircle } from 'lucide-react';
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { DeleteDialog, EditDialog, BlockDialog, DropdownMenuList, PaginationList } from '@/components/admins/components';
-
+import { useToast } from '@/hooks/use-toast';
 const ITEMS_PER_PAGE = 5;
 
 const UserList = ({ data = [], setUserList }) => {
+  const {toast} = useToast()
   const [editUser, setEditUser] = useState(null);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showBlockDialog, setShowBlockDialog] = useState(false);
@@ -78,17 +79,26 @@ const UserList = ({ data = [], setUserList }) => {
         email: editUser.email
       });
 
-      if (response.data) {
+      if (response.data.success) {
         setUserList(prevUsers =>
           prevUsers.map(user =>
-            user.id === editUser.id
+            user._id === editUser._id
               ? { ...user, email: editUser.email }
               : user
           )
         );
       }
+      toast({
+        title: "Success",
+        description: "User edit success",
+        variant: "success",
+      });
     } catch (error) {
-      console.error('Error updating user:', error);
+      toast({
+        title: "Error",
+        description: error?.response?.data?.message || "Failed to edit user",
+        variant: "destructive",
+      });
     }
     setEditUser(null);
   };
