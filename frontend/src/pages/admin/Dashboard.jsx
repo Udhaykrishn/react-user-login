@@ -1,9 +1,11 @@
 import UserList from "@/components/admins/user-tables";
 import { useEffect, useState } from "react";
 import axios from "axios"
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const [data,setData] = useState([]);
+  const navigate = useNavigate();
 
 
   const fetchData = async ()=>{
@@ -12,6 +14,11 @@ const Dashboard = () => {
       console.log(response.data)
       setData(response.data.users)
      } catch (error) {
+      if(error.response){
+        if(error.response?.data?.message === "TokenExpire"){
+          navigate("/admin/login")
+        }
+      }
       console.log(error.message)
      }
   }
