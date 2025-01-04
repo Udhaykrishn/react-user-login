@@ -4,14 +4,18 @@ import './index.css'
 import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 import axios from "axios"
+import { store } from './store/store'
+import { Provider } from 'react-redux'
 
 axios.defaults.baseURL = "http://localhost:3001";
 axios.defaults.withCredentials = true;
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-      <BrowserRouter>
+    <BrowserRouter>
+      <Provider store={store}>
         <App />
-      </BrowserRouter>
+      </Provider>
+    </BrowserRouter>
   </StrictMode>,
 )
