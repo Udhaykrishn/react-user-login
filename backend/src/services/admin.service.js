@@ -102,7 +102,6 @@ export class AdminServices {
             }
 
             const updateUser = await this.#user.updateUserById(id, payload)
-            console.log(updateUser)
             return { success: true, message: "User updated successfully", user: updateUser }
         } catch (error) {
             console.log(error.message)
