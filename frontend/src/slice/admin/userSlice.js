@@ -14,9 +14,22 @@ export const fetchUsers = createAsyncThunk('user/fetchUsers',
     }
 )
 
+export const createUser = createAsyncThunk("user/createUser",
+    async ({ payload }, { rejectWithValue }) => {
+        try {
+            const { data } = await axios.post("/admin/dashboard/create", payload)
+            console.log(data)
+            return data;
+        } catch (error) {
+            console.log(error)
+            return rejectWithValue(error?.response?.data?.message || "Failed to fetch users")
+        }
+    }
+)
+
 export const updateUserBlockStatus = createAsyncThunk("users/updateBlockStatus",
     async ({ userId, isBlocked }, { rejectWithValue }) => {
-        console.log(userId,isBlocked)
+        console.log(userId, isBlocked)
         try {
             const response = await axios.patch(`/admin/dashboard/update/${userId}`, {
                 isBlocked: !isBlocked
@@ -91,6 +104,14 @@ const userSlice = createSlice({
         }).addCase(editUser.fulfilled, (state, action) => {
             const updatedUser = action.payload
             state.data = state.data.map(user => user._id === updatedUser._id ? updatedUser : user)
+        }).addCase(createUser.fulfilled, (state, action) => {
+            state.loading = false,
+                state.data = [...state.data, action.payload?.user]
+        }).addCase(createUser.pending, (state) => {
+            state.loading = true
+        }).addCase(createUser.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.payload
         })
     }
 })
