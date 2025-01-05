@@ -11,7 +11,7 @@ class UserController {
     try {
       const payload = req.body;
       const user = await this.#userService.register(payload);
-
+      console.log(user)
       if (user.success) {
         return res.status(201).json(user);
       } else {
@@ -49,7 +49,6 @@ class UserController {
   async logout(req, res) {
     try {
       const result = await this.#userService.logout(res);
-      console.log(result);
       if (result.success) {
         return res.status(200).json(result);
       } else {
@@ -70,7 +69,7 @@ class UserController {
       if (user.success) {
         return res.status(200).json(user)
       } else {
-        return res.status(404).json({ user })
+        return res.status(404).json(user)
       }
     } catch (error) {
       console.log(error.message)
