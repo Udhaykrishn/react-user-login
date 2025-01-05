@@ -72,7 +72,7 @@ export class AdminServices {
 
     async create(payload) {
         try {
-            const { error } = UserJoiSchema.validate()
+            const { error } = UserJoiSchema.validate(payload)
             if (error) {
                 return { success: false, message: error.details[0].message }
             }
