@@ -15,7 +15,6 @@ class PasswordHash {
       return await argon2.verify(hashed, password);
     } catch (error) {
       console.log(error.message);
-      throw new Error("Failed to verify password");
     }
   }
 }
