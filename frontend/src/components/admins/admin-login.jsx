@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -20,19 +20,12 @@ export function AdminLoginForm({ className, ...props }) {
   const navigate = useNavigate();
   const { toast } = useToast();
   const isLoading = useSelector((state)=>state.adminAuth.loading)
-  const isAdmin = useSelector((state) => state.adminAuth.isAdmin);
 
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  useEffect(() => {
-    if (isAdmin) {
-      console.log(isAdmin)
-      navigate("/admin");
-    }
-  }, []);
   
   const handleInputChange = (e) => {
     const { id, value } = e.target;
