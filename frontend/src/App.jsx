@@ -1,4 +1,4 @@
-import { Route, Routes, useNavigate } from 'react-router-dom'
+import {  Route, Routes, useNavigate } from 'react-router-dom'
 import { Suspense, useEffect } from 'react'
 import Login from "@/pages/users/Login"
 import Register from "@/pages/users/Signup"
@@ -18,14 +18,11 @@ import { AdminProctedRoute, AdminPublicRoute } from './components/routes'
 function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const isAdmin = useSelector(state=>state.adminAuth.isAdmin)
+  const isAdmin = useSelector(state => state.adminAuth.isAdmin)
 
   useEffect(() => {
-    if(isAdmin){
-      navigate("/admin")
-    }
     dispatch(fetchUserProfile());
-  }, [dispatch,isAdmin,navigate])
+  }, [dispatch, isAdmin, navigate])
 
   return (
     <div >
