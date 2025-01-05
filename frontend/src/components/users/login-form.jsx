@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils";
 import { useState } from "react";
-import axios from "axios";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,17 +10,24 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { userSignIn } from "@/slice/user/userAuth";
+import { useNavigate } from "react-router-dom";
+import { fetchUserProfile } from "@/slice/user/userProfile";
 
 export function LoginForm({ className, ...props }) {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { toast } = useToast();
+  
+  const isLoading = useSelector((state) => state.userAuth.pending);
+  const error = useSelector((state) => state.userAuth.error);
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -33,32 +39,28 @@ export function LoginForm({ className, ...props }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
 
     try {
-      const response = await axios.post(
-        "/user/login",
-        formData,
-      );
-
-      if (response.data.success) {
-        toast({
-          title: "Success",
-          description: "User login successful!",
-          variant: "success",
-        });
-        // Assuming your backend returns some token or user data
-        // You might want to store this in context or localStorage
-        navigate("/"); // Adjust the route as needed
-      }
+      // First login the user
+      await dispatch(userSignIn({ payload: formData })).unwrap();
+      
+      // Then fetch the user profile
+      await dispatch(fetchUserProfile()).unwrap();
+      
+      toast({
+        title: "Success",
+        description: "Login successful!",
+        variant: "success"
+      });
+      
+      // Navigate after both operations are successful
+      navigate("/", { replace: true });
     } catch (error) {
       toast({
         title: "Error",
-        description: error.response?.data?.message || "Login failed. Please try again.",
+        description: error || "Failed to login. Please try again.",
         variant: "destructive",
       });
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -68,7 +70,7 @@ export function LoginForm({ className, ...props }) {
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
           <CardDescription>
-           User email below to login to your account
+            Enter your email below to login to your account
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -97,6 +99,11 @@ export function LoginForm({ className, ...props }) {
                   disabled={isLoading}
                 />
               </div>
+              {error && (
+                <div className="text-sm text-red-500">
+                  {error}
+                </div>
+              )}
               <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? "Logging in..." : "Login"}
               </Button>
@@ -106,8 +113,8 @@ export function LoginForm({ className, ...props }) {
               <Button
                 variant="outline"
                 className="underline underline-offset-4"
-                onClick={() => navigate("/user/register")}
                 type="button"
+                onClick={() => navigate("/user/register")}
                 disabled={isLoading}
               >
                 Sign up
