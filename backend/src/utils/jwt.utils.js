@@ -18,7 +18,7 @@ class JWTService {
       return jwt.verify(token, this.#secret);
     } catch (error) {
       if (error.name === "TokenExpiredError") {
-        throw new Error("Token has expired");
+        return {error:"TokenExpiredError"}
       }
       throw new Error("Invalid or expired token");
     }
