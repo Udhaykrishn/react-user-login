@@ -23,16 +23,19 @@ const UserList = () => {
   const [showBlockDialog, setShowBlockDialog] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
 
+  
   const paginatedUsers = useSelector(selectPaginatedUsers)
   const totalPages = useSelector(selectTotalPages)
   const currentPage = useSelector(state => state.users.currentPage)
   const searchQuery = useSelector(state => state.users.searchQuery)
   const loading = useSelector(state => state.users.loading)
   const error = useSelector(state => state.users.error)
+  const isAdmin = useSelector(state=>state.adminAuth.isAdmin)
 
   useEffect(() => {
+    console.log(isAdmin)
     dispatch(fetchUsers())
-  }, [dispatch])
+  }, [dispatch,isAdmin])
 
   const handleEdit = (user) => {
     setEditUserData(user);

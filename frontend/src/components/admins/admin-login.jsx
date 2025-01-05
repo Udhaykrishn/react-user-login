@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils";
-import { useState } from "react";
-import axios from "axios";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -13,16 +12,28 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { useDispatch,useSelector } from "react-redux";
+import { adminAuthLogin } from "@/slice/admin/adminAuth";
 
 export function AdminLoginForm({ className, ...props }) {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const isLoading = useSelector((state)=>state.adminAuth.loading)
+  const isAdmin = useSelector((state) => state.adminAuth.isAdmin);
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-  const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    if (isAdmin) {
+      console.log(isAdmin)
+      navigate("/admin");
+    }
+  }, []);
+  
   const handleInputChange = (e) => {
     const { id, value } = e.target;
     setFormData((prev) => ({
@@ -33,34 +44,17 @@ export function AdminLoginForm({ className, ...props }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
 
     try {
-      const response = await axios.post(
-        "/admin/login",
-        formData,
-      );
-
-      console.log(response.data)
-
-      if (response.data.success) {
-        toast({
-          title: "Success",
-          description: "Login successful!",
-          variant: "success",
-        });
-        // Assuming your backend returns some token or user data
-        // You might want to store this in context or localStorage
-        navigate("/admin"); // Adjust the route as needed
-      }
+    await dispatch(adminAuthLogin({payload:formData})).unwrap();
+    
+        navigate("/admin",{replace:true}); 
     } catch (error) {
       toast({
         title: "Error",
         description: error.response?.data?.message || "Login failed. Please try again.",
         variant: "destructive",
       });
-    } finally {
-      setIsLoading(false);
     }
   };
 
