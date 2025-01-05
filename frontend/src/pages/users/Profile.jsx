@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from 'react';
-import axios from 'axios';
 import { useToast } from '@/hooks/use-toast';
 import {
   Card,
@@ -28,47 +27,31 @@ import {
 } from "@/components/ui/select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Pencil, User, Camera, Loader2, X } from 'lucide-react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUserProfile, editUserProfile, setData } from '@/slice/user/userProfile';
 
 const Profile = () => {
   const fileInputRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
-
-  const [user, setUser] = useState({
-    id: "",
-    username: "",
-    email: "",
-    role: "user",
-    photo: "",
-    password: "••••••••"
-  });
+  const data = useSelector((state) => state.userProfile.data);
+  const loading = useSelector((state) => state.userProfile.loading);
 
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [showImagePreview, setShowImagePreview] = useState(false);
-  const [editedUser, setEditedUser] = useState(user);
+  const [editedUser, setEditedUser] = useState(data);
   const [previewImage, setPreviewImage] = useState(null);
+  const dispatch = useDispatch();
 
-  const fetchUserData = async () => {
-    try {
-      setIsLoading(true);
-      const response = await axios.get('/user/profile');
-      const userData = response.data;
-      setUser(userData.user);
-      setEditedUser(userData.user);
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: error.response?.data?.message || "User profile failed to load. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
+ 
 
   useEffect(() => {
-    fetchUserData();
-  }, []);
+    dispatch(fetchUserProfile());
+  }, [dispatch]);
+
+  useEffect(() => {
+    setEditedUser(data);
+  }, [data]);
 
   const handleImageClick = (e) => {
     e.stopPropagation();
@@ -76,7 +59,7 @@ const Profile = () => {
   };
 
   const handleProfilePhotoClick = () => {
-    if (user.photo) {
+    if (data.photo) {
       setShowImagePreview(true);
     }
   };
@@ -130,40 +113,35 @@ const Profile = () => {
         formData.append('password', editedUser.password);
       }
 
-      const response = await axios.patch(`/user/update/${user.id}`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+      await dispatch(editUserProfile({ 
+        userId: data._id,
+        payload: formData 
+      })).unwrap();
+
+      // Update the UI with all new data
+      const updatedUserData = {
+        ...editedUser,
+        photo: previewImage || editedUser.photo,
+        password: '••••••••'
+      };
+      dispatch(setData(updatedUserData));
+
+      // Close dialog and clear preview
+      setShowEditDialog(false);
+      setPreviewImage(null);
+
+      toast({
+        title: "Success",
+        description: "Profile updated successfully",
       });
 
-      if (response.data.success) {
-        // Immediately update the UI with all new data
-        const updatedUserData = {
-          ...editedUser,
-          photo: previewImage || editedUser.photo,
-          password: '••••••••',
-        };
-
-        // Update both states to reflect changes immediately
-        setUser(updatedUserData);
-        setEditedUser(updatedUserData);
-        
-        // Close dialog and clear preview
-        setShowEditDialog(false);
-        setPreviewImage(null);
-        
-        toast({
-          title: "Success",
-          description: "Profile updated successfully",
-        });
-
-        // Optional: Fetch fresh data from server in background
-        fetchUserData();
-      }
+      // Fetch fresh data from server
+      dispatch(fetchUserProfile()).unwrap();
     } catch (error) {
+      console.log(error)
       toast({
         title: "Error",
-        description: error.response?.data?.message || "Failed to update profile",
+        description:error || "Failed to update profile in profile",
         variant: "destructive",
       });
     } finally {
@@ -180,7 +158,7 @@ const Profile = () => {
     );
   };
 
-  if (isLoading && !user.email) {
+  if (loading && !data.email) {
     return (
       <div className="w-full min-h-screen flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin" />
@@ -211,7 +189,7 @@ const Profile = () => {
             <div className="flex justify-center">
               <div className="cursor-pointer" onClick={handleProfilePhotoClick}>
                 <Avatar className="h-24 w-24">
-                  <AvatarImage src={user.photo} alt={user.username} />
+                  <AvatarImage src={data.photo} alt={data.username} />
                   <AvatarFallback>
                     <User className="h-12 w-12" />
                   </AvatarFallback>
@@ -222,17 +200,17 @@ const Profile = () => {
             <div className="grid gap-4">
               <div className="space-y-2">
                 <Label>Username</Label>
-                <div className="p-2 bg-gray-100 rounded-md">{user.username}</div>
+                <div className="p-2 bg-gray-100 rounded-md">{data.username}</div>
               </div>
 
               <div className="space-y-2">
                 <Label>Email</Label>
-                <div className="p-2 bg-gray-100 rounded-md">{user.email}</div>
+                <div className="p-2 bg-gray-100 rounded-md">{data.email}</div>
               </div>
 
               <div className="space-y-2">
                 <Label>Role</Label>
-                <div className="p-2 bg-gray-100 rounded-md capitalize">{user.role}</div>
+                <div className="p-2 bg-gray-100 rounded-md capitalize">{data.role}</div>
               </div>
             </div>
           </CardContent>
@@ -369,8 +347,8 @@ const Profile = () => {
             </DialogHeader>
             <div className="flex justify-center items-center p-4">
               <img
-                src={user.photo}
-                alt={user.username}
+                src={data.photo}
+                alt={data.username}
                 className="max-w-full max-h-[500px] object-contain rounded-lg"
               />
             </div>
