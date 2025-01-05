@@ -3,7 +3,7 @@
 import * as React from "react"
 
 const TOAST_LIMIT = 1
-const TOAST_REMOVE_DELAY = 1000000
+const TOAST_REMOVE_DELAY = 500
 
 const actionTypes = {
   ADD_TOAST: "ADD_TOAST",
@@ -32,7 +32,7 @@ const addToRemoveQueue = (toastId) => {
       type: "REMOVE_TOAST",
       toastId: toastId,
     })
-  }, TOAST_REMOVE_DELAY)
+  },TOAST_REMOVE_DELAY)
 
   toastTimeouts.set(toastId, timeout)
 }
