@@ -8,7 +8,7 @@ import {  fetchUsers,
   setSearchQuery,
   setCurrentPage,
   selectPaginatedUsers,
-  selectTotalPages} from '@/slice/user/userSlice';
+  selectTotalPages} from '@/slice/admin/userSlice';
 import {  CheckCircle2, Search, XCircle } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import { Input } from '@/components/ui/input';
