@@ -53,7 +53,7 @@
     async create(req,res){
         try {
             const user = await this.#adminServices.create(req.body)
-
+            console.log(user)
             if(user.success){
                 return res.status(201).json(user)
             }else{
