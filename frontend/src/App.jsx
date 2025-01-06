@@ -10,9 +10,9 @@ import Profile from "@/pages/users/Profile"
 import { Toaster } from '@/components/ui/toaster'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchUserProfile } from './slice/user/userProfile'
 import { ProtectedRoute, PublicRoute } from './components/routes/UserAuthRouter'
-import { AdminProctedRoute, AdminPublicRoute } from './components/routes'
+import {  AdminProtectedRoute, AdminPublicRoute } from './components/routes'
+import { checkAdminAuth } from './slice/admin/adminAuth'
 
 
 function App() {
@@ -21,31 +21,30 @@ function App() {
   const isAdmin = useSelector(state => state.adminAuth.isAdmin)
 
   useEffect(() => {
-    dispatch(fetchUserProfile());
+    dispatch(checkAdminAuth());
   }, [dispatch, isAdmin, navigate])
 
   return (
-    <div >
+    <div>
       <Navbar />
       <Toaster />
-      <Suspense>
+      <Suspense fallback={<div>Loading...</div>}>
         <Routes>
           <Route element={<AdminPublicRoute />}>
-            <Route path='/admin/login' element={<AdminLogin />} />
+            <Route path="/admin/login" element={<AdminLogin />} />
+          </Route>
+          <Route element={<AdminProtectedRoute />}>
+            <Route path="/admin" element={<Dashboard />} />
           </Route>
           <Route element={<PublicRoute />}>
-            <Route path='/user/login' element={<Login />} />
-            <Route path='/user/register' element={<Register />} />
-          </Route>
-          <Route element={<AdminProctedRoute />}>
-            <Route path='/admin' element={<Dashboard />} />
+            <Route path="/user/login" element={<Login />} />
+            <Route path="/user/register" element={<Register />} />
           </Route>
           <Route element={<ProtectedRoute />}>
-            <Route path='/' element={<Profile />} />
+            <Route path="/" element={<Profile />} />
           </Route>
         </Routes>
       </Suspense>
-
     </div>
   )
 }
