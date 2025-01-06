@@ -2,19 +2,44 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// Get initial state from localStorage
 const getInitialAdminState = () => ({
   pending: false,
   error: null,
-  isAdmin: localStorage.getItem("isAdmin") === "true"
+  isAdmin: localStorage.getItem("isAdmin") === "true",
+  isInitialized: false  // Add this to track initial auth check
 });
 
+// Add axios interceptor to handle 401 errors
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem("isAdmin");
+      window.location.href = "/admin/login";
+    }
+    return Promise.reject(error);
+  }
+);
+
+export const checkAdminAuth = createAsyncThunk(
+  "admin/checkAuth",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get("/admin/dashboard/check-auth");
+      return response.data.isAuthenticated;
+    } catch (error) {
+      console.log(error)
+      localStorage.removeItem("isAdmin");
+      return rejectWithValue(false);
+    }
+  }
+);
+
 export const adminAuthLogin = createAsyncThunk(
-  "admin/signup",
+  "admin/login",
   async ({ payload }, { rejectWithValue }) => {
     try {
       const { data } = await axios.post("/admin/login", payload);
-      // Only store the isAdmin status
       localStorage.setItem("isAdmin", "true");
       return data?.admin;
     } catch (error) {
@@ -28,10 +53,10 @@ export const adminAuthLogout = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const { data } = await axios.post("/admin/dashboard/logout");
-      // Remove isAdmin status on logout
       localStorage.removeItem("isAdmin");
       return data?.success;
     } catch (error) {
+      localStorage.removeItem("isAdmin");
       return rejectWithValue(error?.response?.data?.message);
     }
   }
@@ -42,6 +67,19 @@ const adminAuthSlice = createSlice({
   initialState: getInitialAdminState(),
   extraReducers: (builder) => {
     builder
+      .addCase(checkAdminAuth.pending, (state) => {
+        state.pending = true;
+      })
+      .addCase(checkAdminAuth.fulfilled, (state, action) => {
+        state.isAdmin = action.payload;
+        state.isInitialized = true;
+        state.pending = false;
+      })
+      .addCase(checkAdminAuth.rejected, (state) => {
+        state.isAdmin = false;
+        state.isInitialized = true;
+        state.pending = false;
+      })
       .addCase(adminAuthLogin.pending, (state) => {
         state.pending = true;
       })
@@ -49,7 +87,6 @@ const adminAuthSlice = createSlice({
         state.error = action.payload;
         state.isAdmin = false;
         state.pending = false;
-        localStorage.removeItem("isAdmin");
       })
       .addCase(adminAuthLogin.fulfilled, (state) => {
         state.error = null;
@@ -62,6 +99,7 @@ const adminAuthSlice = createSlice({
       })
       .addCase(adminAuthLogout.rejected, (state, action) => {
         state.error = action.payload;
+        state.isAdmin = false;
       });
   }
 });
