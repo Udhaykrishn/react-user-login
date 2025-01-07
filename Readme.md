@@ -1,27 +1,29 @@
-<div align="left" style="position: relative;">
-<img src="https://img.icons8.com/?size=512&id=55494&format=png" align="right" width="30%" style="margin: -20px 0 0 20px;">
-<h1>REACT-USER-LOGIN</h1>
-<p align="left">
+<div align="left">
+    <img src="https://img.icons8.com/?size=512&id=55494&format=png" width="40%" align="left" style="margin-right: 15px"/>
+    <div style="display: inline-block;">
+        <h2 style="display: inline-block; vertical-align: middle; margin-top: 0;">REACT-USER-LOGIN</h2>
+        <p>
 	<em><code>❯ REPLACE-ME</code></em>
 </p>
-<p align="left">
+        <p>
 	<img src="https://img.shields.io/github/license/Udhaykrishn/react-user-login?style=for-the-badge&logo=opensourceinitiative&logoColor=white&color=0080ff" alt="license">
 	<img src="https://img.shields.io/github/last-commit/Udhaykrishn/react-user-login?style=for-the-badge&logo=git&logoColor=white&color=0080ff" alt="last-commit">
 	<img src="https://img.shields.io/github/languages/top/Udhaykrishn/react-user-login?style=for-the-badge&color=0080ff" alt="repo-top-language">
 	<img src="https://img.shields.io/github/languages/count/Udhaykrishn/react-user-login?style=for-the-badge&color=0080ff" alt="repo-language-count">
 </p>
-<p align="left">Built with the tools and technologies:</p>
-<p align="left">
+        <p>Built with the tools and technologies:</p>
+        <p>
 	<img src="https://img.shields.io/badge/npm-CB3837.svg?style=for-the-badge&logo=npm&logoColor=white" alt="npm">
 	<img src="https://img.shields.io/badge/HTML5-E34F26.svg?style=for-the-badge&logo=HTML5&logoColor=white" alt="HTML5">
 	<img src="https://img.shields.io/badge/JavaScript-F7DF1E.svg?style=for-the-badge&logo=JavaScript&logoColor=black" alt="JavaScript">
 </p>
+    </div>
 </div>
-<br clear="right">
+<br clear="left"/>
 
-## 🔗 Quick Links
+## 🔗 Table of Contents
 
-- [� Quick Links](#-quick-links)
+- [🔗 Table of Contents](#-table-of-contents)
 - [📍 Overview](#-overview)
 - [👾 Features](#-features)
 - [📁 Project Structure](#-project-structure)
@@ -398,6 +400,10 @@
 										<td><code>❯ REPLACE-ME</code></td>
 									</tr>
 									<tr>
+										<td><b><a href='https://github.com/Udhaykrishn/react-user-login/blob/master/frontend/src/components/users/index.js'>index.js</a></b></td>
+										<td><code>❯ REPLACE-ME</code></td>
+									</tr>
+									<tr>
 										<td><b><a href='https://github.com/Udhaykrishn/react-user-login/blob/master/frontend/src/components/users/signup-form.jsx'>signup-form.jsx</a></b></td>
 										<td><code>❯ REPLACE-ME</code></td>
 									</tr>
@@ -445,9 +451,55 @@
 												<td><b><a href='https://github.com/Udhaykrishn/react-user-login/blob/master/frontend/src/components/admins/components/index.js'>index.js</a></b></td>
 												<td><code>❯ REPLACE-ME</code></td>
 											</tr>
+											<tr>
+												<td><b><a href='https://github.com/Udhaykrishn/react-user-login/blob/master/frontend/src/components/admins/components/CreateUserDialog.jsx'>CreateUserDialog.jsx</a></b></td>
+												<td><code>❯ REPLACE-ME</code></td>
+											</tr>
 											</table>
 										</blockquote>
 									</details>
+									<details>
+										<summary><b>hooks</b></summary>
+										<blockquote>
+											<table>
+											<tr>
+												<td><b><a href='https://github.com/Udhaykrishn/react-user-login/blob/master/frontend/src/components/admins/hooks/useProfile.jsx'>useProfile.jsx</a></b></td>
+												<td><code>❯ REPLACE-ME</code></td>
+											</tr>
+											<tr>
+												<td><b><a href='https://github.com/Udhaykrishn/react-user-login/blob/master/frontend/src/components/admins/hooks/index.js'>index.js</a></b></td>
+												<td><code>❯ REPLACE-ME</code></td>
+											</tr>
+											<tr>
+												<td><b><a href='https://github.com/Udhaykrishn/react-user-login/blob/master/frontend/src/components/admins/hooks/usePagination.jsx'>usePagination.jsx</a></b></td>
+												<td><code>❯ REPLACE-ME</code></td>
+											</tr>
+											<tr>
+												<td><b><a href='https://github.com/Udhaykrishn/react-user-login/blob/master/frontend/src/components/admins/hooks/useUserSearch.jsx'>useUserSearch.jsx</a></b></td>
+												<td><code>❯ REPLACE-ME</code></td>
+											</tr>
+											</table>
+										</blockquote>
+									</details>
+								</blockquote>
+							</details>
+							<details>
+								<summary><b>routes</b></summary>
+								<blockquote>
+									<table>
+									<tr>
+										<td><b><a href='https://github.com/Udhaykrishn/react-user-login/blob/master/frontend/src/components/routes/AdminAuthRouter.jsx'>AdminAuthRouter.jsx</a></b></td>
+										<td><code>❯ REPLACE-ME</code></td>
+									</tr>
+									<tr>
+										<td><b><a href='https://github.com/Udhaykrishn/react-user-login/blob/master/frontend/src/components/routes/index.js'>index.js</a></b></td>
+										<td><code>❯ REPLACE-ME</code></td>
+									</tr>
+									<tr>
+										<td><b><a href='https://github.com/Udhaykrishn/react-user-login/blob/master/frontend/src/components/routes/UserAuthRouter.jsx'>UserAuthRouter.jsx</a></b></td>
+										<td><code>❯ REPLACE-ME</code></td>
+									</tr>
+									</table>
 								</blockquote>
 							</details>
 							<details>
@@ -558,6 +610,52 @@
 									</tr>
 									<tr>
 										<td><b><a href='https://github.com/Udhaykrishn/react-user-login/blob/master/frontend/src/pages/admin/Dashboard.jsx'>Dashboard.jsx</a></b></td>
+										<td><code>❯ REPLACE-ME</code></td>
+									</tr>
+									</table>
+								</blockquote>
+							</details>
+						</blockquote>
+					</details>
+					<details>
+						<summary><b>store</b></summary>
+						<blockquote>
+							<table>
+							<tr>
+								<td><b><a href='https://github.com/Udhaykrishn/react-user-login/blob/master/frontend/src/store/store.js'>store.js</a></b></td>
+								<td><code>❯ REPLACE-ME</code></td>
+							</tr>
+							</table>
+						</blockquote>
+					</details>
+					<details>
+						<summary><b>slice</b></summary>
+						<blockquote>
+							<details>
+								<summary><b>user</b></summary>
+								<blockquote>
+									<table>
+									<tr>
+										<td><b><a href='https://github.com/Udhaykrishn/react-user-login/blob/master/frontend/src/slice/user/userAuth.js'>userAuth.js</a></b></td>
+										<td><code>❯ REPLACE-ME</code></td>
+									</tr>
+									<tr>
+										<td><b><a href='https://github.com/Udhaykrishn/react-user-login/blob/master/frontend/src/slice/user/userProfile.js'>userProfile.js</a></b></td>
+										<td><code>❯ REPLACE-ME</code></td>
+									</tr>
+									</table>
+								</blockquote>
+							</details>
+							<details>
+								<summary><b>admin</b></summary>
+								<blockquote>
+									<table>
+									<tr>
+										<td><b><a href='https://github.com/Udhaykrishn/react-user-login/blob/master/frontend/src/slice/admin/userSlice.js'>userSlice.js</a></b></td>
+										<td><code>❯ REPLACE-ME</code></td>
+									</tr>
+									<tr>
+										<td><b><a href='https://github.com/Udhaykrishn/react-user-login/blob/master/frontend/src/slice/admin/adminAuth.js'>adminAuth.js</a></b></td>
 										<td><code>❯ REPLACE-ME</code></td>
 									</tr>
 									</table>
