@@ -9,6 +9,6 @@ export const store = configureStore({
         users: userReducer,
         userProfile: userProfileReducer,
         userAuth:userAuthReducer,
-        adminAuth:adminAuthReducer
+        adminAuth:adminAuthReducer,
     }
 })
