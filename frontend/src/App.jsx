@@ -1,12 +1,12 @@
 import {  Route, Routes, useNavigate } from 'react-router-dom'
-import { Suspense, useEffect } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import Login from "@/pages/users/Login"
 import Register from "@/pages/users/Signup"
 
-import Dashboard from '@/pages/admin/Dashboard'
-import Navbar from '@/components/Navbar'
-import AdminLogin from "@/pages/admin/Login"
-import Profile from "@/pages/users/Profile"
+// import Dashboard from '@/pages/admin/Dashboard'
+// import Navbar from '@/components/Navbar'
+// import AdminLogin from "@/pages/admin/Login"
+// import Profile from "@/pages/users/Profile"
 import { Toaster } from '@/components/ui/toaster'
 
 import { useDispatch, useSelector } from 'react-redux'
@@ -14,6 +14,11 @@ import { fetchUserProfile } from './slice/user/userProfile'
 import { ProtectedRoute, PublicRoute } from './components/routes/UserAuthRouter'
 import { AdminProctedRoute, AdminPublicRoute } from './components/routes'
 
+
+const Dashboard = lazy(()=>import("@/pages/admin/Dashboard"))
+const Navbar = lazy(()=>import("@/components/Navbar"))
+const AdminLogin = lazy(()=>import("@/pages/admin/Login"))
+const Profile = lazy(()=>import("@/pages/users/Profile"))
 
 function App() {
   const dispatch = useDispatch();
