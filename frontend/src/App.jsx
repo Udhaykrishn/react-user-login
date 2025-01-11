@@ -3,10 +3,7 @@ import { lazy, Suspense, useEffect } from 'react'
 import Login from "@/pages/users/Login"
 import Register from "@/pages/users/Signup"
 
-// import Dashboard from '@/pages/admin/Dashboard'
-// import Navbar from '@/components/Navbar'
-// import AdminLogin from "@/pages/admin/Login"
-// import Profile from "@/pages/users/Profile"
+
 import { Toaster } from '@/components/ui/toaster'
 
 import { useDispatch, useSelector } from 'react-redux'
