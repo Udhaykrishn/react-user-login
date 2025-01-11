@@ -1,4 +1,4 @@
-import {  Route, Routes, useNavigate } from 'react-router-dom'
+import { Route, Routes, useNavigate } from 'react-router-dom'
 import { lazy, Suspense, useEffect } from 'react'
 import Login from "@/pages/users/Login"
 import Register from "@/pages/users/Signup"
@@ -10,12 +10,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchUserProfile } from './slice/user/userProfile'
 import { ProtectedRoute, PublicRoute } from './components/routes/UserAuthRouter'
 import { AdminProctedRoute, AdminPublicRoute } from './components/routes'
+import { Loader2 } from 'lucide-react'
 
 
-const Dashboard = lazy(()=>import("@/pages/admin/Dashboard"))
-const Navbar = lazy(()=>import("@/components/Navbar"))
-const AdminLogin = lazy(()=>import("@/pages/admin/Login"))
-const Profile = lazy(()=>import("@/pages/users/Profile"))
+const Dashboard = lazy(() => import("@/pages/admin/Dashboard"))
+const Navbar = lazy(() => import("@/components/Navbar"))
+const AdminLogin = lazy(() => import("@/pages/admin/Login"))
+const Profile = lazy(() => import("@/pages/users/Profile"))
 
 function App() {
   const dispatch = useDispatch();
@@ -28,9 +29,13 @@ function App() {
 
   return (
     <div >
-      <Navbar />
       <Toaster />
-      <Suspense>
+      <Suspense fallback={
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-90 z-50">
+          <Loader2 className="h-12 w-12 animate-spin text-white" />
+        </div>
+      }>
+        <Navbar />
         <Routes>
           <Route element={<AdminPublicRoute />}>
             <Route path='/admin/login' element={<AdminLogin />} />

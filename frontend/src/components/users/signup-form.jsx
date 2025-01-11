@@ -13,7 +13,7 @@ import { useToast } from "@/hooks/use-toast"
 import { useDispatch, useSelector } from "react-redux"
 import { userSignUp } from "@/slice/user/userAuth"
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 export function SignupForm({
   className,
   ...props
@@ -41,18 +41,18 @@ export function SignupForm({
     e.preventDefault();
 
     try {
-      const result =  await dispatch(userSignUp({ payload: formData })).unwrap()
+      const result = await dispatch(userSignUp({ payload: formData })).unwrap()
       if (result) {
         toast({
           title: "Success",
           description: "Account created successfully!",
           variant: "success"
         });
-        
+
         // Redirect to login page after successful registration
         navigate("/user/login");
       }
-     
+
     } catch (error) {
       console.log(error)
       toast({
@@ -74,7 +74,7 @@ export function SignupForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit}>
+          <form autoComplete="off" onSubmit={handleSubmit}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
                 <Label htmlFor="name">Name</Label>
@@ -117,7 +117,9 @@ export function SignupForm({
             </div>
             <div className="mt-4 text-center text-sm">
               Already have an account?{" "}
-              <Button variant="outline" className="underline underline-offset-4" >Sign In</Button>
+              <Link to={"/user/login"}>
+                <Button variant="outline" className="underline underline-offset-4" >Sign In</Button>
+              </Link>
             </div>
           </form>
         </CardContent>

@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import {  useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -12,21 +12,21 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { adminAuthLogin } from "@/slice/admin/adminAuth";
 
 export function AdminLoginForm({ className, ...props }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const isLoading = useSelector((state)=>state.adminAuth.loading)
+  const isLoading = useSelector((state) => state.adminAuth.loading)
 
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  
+
   const handleInputChange = (e) => {
     const { id, value } = e.target;
     setFormData((prev) => ({
@@ -39,9 +39,9 @@ export function AdminLoginForm({ className, ...props }) {
     e.preventDefault();
 
     try {
-    await dispatch(adminAuthLogin({payload:formData})).unwrap();
-    
-        navigate("/admin",{replace:true}); 
+      await dispatch(adminAuthLogin({ payload: formData })).unwrap();
+
+      navigate("/admin", { replace: true });
     } catch (error) {
       toast({
         title: "Error",
@@ -61,7 +61,7 @@ export function AdminLoginForm({ className, ...props }) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit}>
+          <form autoComplete="off" onSubmit={handleSubmit}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
@@ -88,18 +88,6 @@ export function AdminLoginForm({ className, ...props }) {
               </div>
               <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? "Logging in..." : "Login"}
-              </Button>
-            </div>
-            <div className="mt-4 text-center text-sm">
-              Don&apos;t have an account?{" "}
-              <Button
-                variant="outline"
-                className="underline underline-offset-4"
-                onClick={() => navigate("/user/register")}
-                type="button"
-                disabled={isLoading}
-              >
-                Sign up
               </Button>
             </div>
           </form>
